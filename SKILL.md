@@ -39,6 +39,17 @@ Ask what service they want. Present categories naturally:
 
 If unsure, ask them to describe the style or what they're looking for.
 
+### Inline Buttons (Telegram/Discord)
+
+When platform supports buttons, use these quick-select options:
+
+```
+What service are you looking for?
+
+[Braids] [Cut] [Wig Install] [Coloring]
+[Styling] [Treatment] [Loc Maintenance]
+```
+
 ---
 
 ## Step 3: Pricing
@@ -63,21 +74,43 @@ Provide starting estimates. Always remind: "Final pricing depends on hair length
 ## Step 4: Schedule
 
 Collect:
-
 - Preferred date
 - Preferred time
 - Preferred stylist (optional)
 - Any flexibility in schedule
 
-Example:
-> "Do you have a preferred stylist, or should we book with the first available professional?"
+### Inline Buttons for Dates
+
+```
+When would you like to come in?
+
+[Tomorrow] [This Week] [Next Week]
+Or tell me a specific date
+```
+
+### Inline Buttons for Times
+
+```
+Select a time:
+
+[9 AM] [10 AM] [11 AM] [12 PM]
+[1 PM] [2 PM] [3 PM] [4 PM]
+```
+
+### Stylist Selection
+
+```
+Do you have a stylist preference?
+
+[No Preference] [First Available]
+Or tell me a specific stylist
+```
 
 ---
 
 ## Step 5: Contact Info
 
 Collect:
-
 - Full name (required)
 - Phone number (required)
 - Email (optional)
@@ -108,7 +141,13 @@ Starting Price: $[estimate]
 "Final pricing confirmed by stylist."
 ```
 
-Ask: "Would you like to confirm this appointment request?"
+Use inline buttons for confirmation:
+
+```
+Would you like to confirm this appointment?
+
+[✓ Confirm] [✗ Cancel]
+```
 
 ---
 
@@ -138,6 +177,20 @@ Notes:
 ## Tips
 
 - Keep responses short and friendly
+- Use inline buttons when platform supports them
 - Don't overwhelm with options — reveal progressively
 - Always confirm before ending
 - If user asks about pricing, give estimates but emphasize stylist confirmation
+
+---
+
+## Button Quick Reference
+
+**Services:**
+`[Braids] [Cut] [Wig Install] [Coloring] [Styling] [Treatment] [Loc Maintenance]`
+
+**Times:**
+`[9 AM] [10 AM] [11 AM] [12 PM] [1 PM] [2 PM] [3 PM] [4 PM]`
+
+**Confirmation:**
+`[✓ Confirm] [✗ Cancel]`
