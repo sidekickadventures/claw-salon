@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClawSalon - Book Appointment</title>
+    <style>
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --secondary: #EC4899;
+            --bg: #0F0F1A;
+            --card: #1A1A2E;
+            --text: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border: #2D2D44;
+            --success: #10B981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: var(--text-muted);
+        }
+        
+        .card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+        
+        .step {
+            display: none;
+        }
+        
+        .step.active {
+            display: block;
+        }
+        
+        .step h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 16px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+        
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline.selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        
+        .service-btn {
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .service-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+        
+        .progress {
+            display: flex;
+            margin-bottom: 24px;
+            gap: 8px;
+        }
+        
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+        }
+        
+        .progress-step.active {
+            background: var(--primary);
+        }
+        
+        .summary {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-label {
+            color: var(--text-muted);
+        }
+        
+        .summary-value {
+            font-weight: 500;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+        
+        .success-message p {
+            color: var(--text-muted);
+        }
+        
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .back-btn:hover {
+            color: var(--text);
+        }
+        
+        .error {
+            color: #EF4444;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💇 ClawSalon</h1>
+            <p>Book your appointment</p>
+        </div>
+        
+        <div class="progress" id="progress">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+        </div>
+        
+        <form id="bookingForm">
+            <!-- Step 1: Service -->
+            <div class="card step active" data-step="1">
+                <h2>What service do you want?</h2>
+                <div class="btn-grid">
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Braids', 120)">
+                        <div class="service-icon">🧝</div>
+                        Braids<br><small>$120+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Haircut', 35)">
+                        <div class="service-icon">✂️</div>
+                        Haircut<br><small>$35+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Wig Install', 150)">
+                        <div class="service-icon">👩‍🦰</div>
+                        Wig Install<br><small>$150+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Hair Coloring', 120)">
+                        <div class="service-icon">🎨</div>
+                        Coloring<br><small>$120+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Hair Styling', 40)">
+                        <div class="service-icon">💇</div>
+                        Styling<br><small>$40+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Deep Treatment', 60)">
+                        <div class="service-icon">🧴</div>
+                        Treatment<br><small>$60+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Loc Maintenance', 90)">
+                        <div class="service-icon">🪢</div>
+                        Loc Maintenance<br><small>$90+</small>
+                    </button>
+                    <button type="button" class="btn btn-outline service-btn" onclick="selectService('Natural Hair Care', 50)">
+                        <div class="service-icon">🌿</div>
+                        Natural Care<br><small>$50+</small>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Date & Time -->
+            <div class="card step" data-step="2">
+                <h2>When do you want to come in?</h2>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <select id="time" required>
+                        <option value="">Select a time</option>
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Stylist Preference (optional)</label>
+                    <select id="stylist">
+                        <option value="First Available">First Available</option>
+                        <option value="Any">No Preference</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="nextStep(3)">Continue</button>
+            </div>
+            
+            <!-- Step 3: Contact Info -->
+            <div class="card step" data-step="3">
+                <h2>Your contact info</h2>
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="name" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number *</label>
+                    <input type="tel" id="phone" required placeholder="(555) 123-4567">
+                </div>
+                <div class="form-group">
+                    <label>Email (optional)</label>
+                    <input type="email" id="email" placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Special Notes (optional)</label>
+                    <textarea id="notes" rows="3" placeholder="Hair concerns, allergies, style preferences..."></textarea>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="nextStep(4)">Continue</button>
+            </div>
+            
+            <!-- Step 4: Confirm -->
+            <div class="card step" data-step="4">
+                <h2>Confirm your booking</h2>
+                <div class="summary">
+                    <div class="summary-row">
+                        <span class="summary-label">Service</span>
+                        <span class="summary-value" id="summaryService">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Date</span>
+                        <span class="summary-value" id="summaryDate">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Time</span>
+                        <span class="summary-value" id="summaryTime">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Stylist</span>
+                        <span class="summary-value" id="summaryStylist">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Name</span>
+                        <span class="summary-value" id="summaryName">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Phone</span>
+                        <span class="summary-value" id="summaryPhone">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Starting Price</span>
+                        <span class="summary-value" id="summaryPrice">-</span>
+                    </div>
+                </div>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+                    * Final price confirmed by stylist
+                </p>
+                <button type="submit" class="btn btn-primary">✓ Confirm Booking</button>
+            </div>
+            
+            <!-- Step 5: Success -->
+            <div class="card step" data-step="5">
+                <div class="success-message">
+                    <div class="success-icon">🎉</div>
+                    <h3>Booking Confirmed!</h3>
+                    <p>We'll send a confirmation to your phone.</p>
+                    <p style="margin-top: 16px;">See you soon!</p>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        let booking = {
+            service: '',
+            price: 0,
+            date: '',
+            time: '',
+            stylist: '',
+            name: '',
+            phone: '',
+            email: '',
+            notes: ''
+        };
+        
+        function selectService(service, price) {
+            booking.service = service;
+            booking.price = price;
+            
+            document.querySelectorAll('.service-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.closest('.service-btn').classList.add('selected');
+            
+            setTimeout(() => nextStep(2), 200);
+        }
+        
+        function nextStep(step) {
+            if (step === 3) {
+                booking.date = document.getElementById('date').value;
+                booking.time = document.getElementById('time').value;
+                booking.stylist = document.getElementById('stylist').value;
+                
+                if (!booking.date || !booking.time) {
+                    alert('Please select date and time');
+                    return;
+                }
+                
+                // Set min date to today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('date').min = today;
+            }
+            
+            if (step === 4) {
+                booking.name = document.getElementById('name').value;
+                booking.phone = document.getElementById('phone').value;
+                booking.email = document.getElementById('email').value;
+                booking.notes = document.getElementById('notes').value;
+                
+                if (!booking.name || !booking.phone) {
+                    alert('Please fill in required fields');
+                    return;
+                }
+                
+                // Update summary
+                document.getElementById('summaryService').textContent = booking.service;
+                document.getElementById('summaryDate').textContent = booking.date;
+                document.getElementById('summaryTime').textContent = booking.time;
+                document.getElementById('summaryStylist').textContent = booking.stylist;
+                document.getElementById('summaryName').textContent = booking.name;
+                document.getElementById('summaryPhone').textContent = booking.phone;
+                document.getElementById('summaryPrice').textContent = '$' + booking.price + '+';
+            }
+            
+            showStep(step);
+        }
+        
+        function showStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.querySelector(`[data-step="${step}"]`).classList.add('active');
+            
+            // Update progress
+            document.querySelectorAll('.progress-step').forEach((p, i) => {
+                p.classList.toggle('active', i < step);
+            });
+        }
+        
+        document.getElementById('bookingForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // In production, send to Google Sheets or API
+            const formData = {
+                ...booking,
+                timestamp: new Date().toISOString()
+            };
+            
+            console.log('Booking submitted:', formData);
+            
+            // Show success
+            nextStep(5);
+            
+            // Optional: Send to Google Sheets via Google Apps Script
+            // await fetch('YOUR_GOOGLE_SCRIPT_URL', {
+            //     method: 'POST',
+            //     body: JSON.stringify(formData)
+            // });
+        });
+        
+        // Set min date
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+    </script>
+</body>
+</html>

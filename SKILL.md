@@ -194,3 +194,41 @@ Notes:
 
 **Confirmation:**
 `[✓ Confirm] [✗ Cancel]`
+
+---
+
+## Web Booking Page (Phase 2)
+
+Optionally, offer users a web booking form instead of chat.
+
+**Location:** `assets/booking.html`
+
+**Features:**
+- Beautiful dark-themed UI
+- Step-by-step wizard
+- Service selection with prices
+- Date/time picker
+- Contact form
+- Confirmation summary
+- Ready for Google Sheets integration
+
+**To enable:**
+1. Host the file (GitHub Pages, Vercel, etc.)
+2. Update the URL in the skill
+3. Users can book via web instead of chat
+
+---
+
+## Google Sheets Integration
+
+Bookings can auto-save to Google Sheets. See [references/google-sheets.md](references/google-sheets.md) for setup.
+
+**Quick setup:**
+1. Create Google Sheet with headers
+2. Deploy Google Apps Script
+3. Paste URL into booking.html
+
+**Data captured:**
+- Timestamp, Service, Price
+- Date, Time, Stylist
+- Name, Phone, Email, Notes
