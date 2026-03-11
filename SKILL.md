@@ -232,3 +232,41 @@ Bookings can auto-save to Google Sheets. See [references/google-sheets.md](refer
 - Timestamp, Service, Price
 - Date, Time, Stylist
 - Name, Phone, Email, Notes
+
+---
+
+## Customization (White-Label)
+
+### Config File
+
+Edit `config.js` to customize:
+
+```javascript
+const SALON_CONFIG = {
+    name: "Your Salon Name",
+    greeting: "Welcome to Your Salon!...",
+    
+    services: [
+        { name: "Braids", icon: "🧝", price: 120 },
+        // Add/remove services
+    ],
+    
+    chairFee: { min: 100, max: 150 },
+    hours: ["9:00 AM", "10:00 AM", ...],
+    stylists: [...]
+};
+```
+
+### Web Page Config
+
+In `assets/booking.html`, edit the `SALON_CONFIG` object at the top of the file — no code changes needed!
+
+### For Clients
+
+When a salon/barbershop wants to use this:
+1. Download/fork the repo
+2. Edit config.js (or booking.html config)
+3. Host on their GitHub Pages
+4. Connect to their Google Sheets
+
+They get a fully branded booking system!

@@ -4,6 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClawSalon - Book Appointment</title>
+    
+    <!-- ============================================ -->
+    <!-- CONFIGURATION - Edit these values!          -->
+    <!-- ============================================ -->
+    <script>
+        const SALON_CONFIG = {
+            name: "ClawSalon",
+            greeting: "Book your appointment",
+            
+            services: [
+                { name: "Braids", icon: "🧝", price: 120 },
+                { name: "Haircut", icon: "✂️", price: 35 },
+                { name: "Wig Install", icon: "👩‍🦰", price: 150 },
+                { name: "Coloring", icon: "🎨", price: 120 },
+                { name: "Styling", icon: "💇", price: 40 },
+                { name: "Treatment", icon: "🧴", price: 60 },
+                { name: "Loc Maintenance", icon: "🪢", price: 90 },
+                { name: "Natural Care", icon: "🌿", price: 50 }
+            ],
+            
+            chairFeeMin: 100,
+            chairFeeMax: 150,
+            
+            hours: ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"],
+            
+            priceDisclaimer: "Final pricing confirmed by stylist"
+        };
+    </script>
+    
     <style>
         :root {
             --primary: #8B5CF6;
@@ -246,8 +275,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>💇 ClawSalon</h1>
-            <p>Book your appointment</p>
+            <h1>💇 <span id="salonName">ClawSalon</span></h1>
+            <p id="salonGreeting">Book your appointment</p>
         </div>
         
         <div class="progress" id="progress">
@@ -403,6 +432,51 @@
     </div>
     
     <script>
+        // Default config (fallback)
+        const DEFAULT_CONFIG = {
+            name: "ClawSalon",
+            greeting: "Book your appointment",
+            services: [
+                { name: "Braids", icon: "🧝", price: 120 },
+                { name: "Haircut", icon: "✂️", price: 35 },
+                { name: "Wig Install", icon: "👩‍🦰", price: 150 },
+                { name: "Coloring", icon: "🎨", price: 120 },
+                { name: "Styling", icon: "💇", price: 40 },
+                { name: "Treatment", icon: "🧴", price: 60 },
+                { name: "Loc Maintenance", icon: "🪢", price: 90 },
+                { name: "Natural Care", icon: "🌿", price: 50 }
+            ],
+            chairFeeMin: 100,
+            chairFeeMax: 150,
+            hours: ["9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM"],
+            priceDisclaimer: "Final pricing confirmed by stylist"
+        };
+
+        // Use SALON_CONFIG if defined, otherwise default
+        const CONFIG = typeof SALON_CONFIG !== 'undefined' ? SALON_CONFIG : DEFAULT_CONFIG;
+        
+        // Initialize page with config
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set salon name
+            document.getElementById('salonName').textContent = CONFIG.name;
+            document.getElementById('salonGreeting').textContent = CONFIG.greeting;
+            document.title = CONFIG.name + ' - Book Appointment';
+            
+            // Generate service buttons
+            const serviceGrid = document.querySelector('.btn-grid');
+            serviceGrid.innerHTML = CONFIG.services.map(s => 
+                `<button type="button" class="btn btn-outline service-btn" onclick="selectService('${s.name}', ${s.price})">
+                    <div class="service-icon">${s.icon}</div>
+                    ${s.name}<br><small>$${s.price}+</small>
+                </button>`
+            ).join('');
+            
+            // Generate time options
+            const timeSelect = document.getElementById('time');
+            timeSelect.innerHTML = '<option value="">Select a time</option>' + 
+                CONFIG.hours.map(t => `<option value="${t}">${t}</option>`).join('');
+        });
+        
         let booking = {
             service: '',
             price: 0,
